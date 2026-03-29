@@ -1,8 +1,9 @@
 #include <iostream>
 #include <iomanip>
+#include <string>
 #include "checkups.h"
 #include "compAlgorithm.h"
-using std::cout; using std::cin; using std::endl;
+using std::cout; using std::cin; using std::endl; using std::getline; using std::string;
 
 void PrintBoard(char board[][3]){
     cout << "   0     1     2 " << endl;
@@ -152,7 +153,7 @@ void letsplay(){
     int gameOption;
 
     while(true){
-        cout << "Do you wish to play with a computer or with a person? (1 - Person / 2 - Computer): ";
+        cout << "Do you wish to play with a computer or with a person? (1 - Person / 2 - Computer):\nAnswer ";
         cin >> gameOption;
             if (gameOption == 1 || gameOption == 2){
                 break;
@@ -171,50 +172,37 @@ void letsplay(){
 }
 
 int main(){
-    int answer = -1, gameOption = -1;
+    int answer = -1;
     
-    cout << "Do you wish to play a game of TicTacToe? (1 - Yes / 0 - No)\nAnswer: ";
-
     while(true){
-        cin >> answer;
-        if (answer == 1){    
+        cout << "Do you wish to play a game of TicTacToe? (1 - Yes / 0 - No)\nAnswer: ";
+        if (!safeToRead(answer) || answer != 0 || answer != 1){
+            cout << "Wrong Input!\nTry again.\n\n";
+            continue;
+        }
+        if (answer == 0){
+            cout << "Damn bruh, fuh you";
+            return 0;
+        }
+        if (answer == 1){
             letsplay();
             break;
         }
-        else if (answer == 0){
-            cout << "\nDamn bruh fuh you";
-            return 0;
-        }
-        else if (cin.fail()){
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            cout << "\nDamn bruh learn how to type.\n";
-            cout << "Try again big guy.\n\n";
-        }
-        cin.clear();
-        cin.ignore(INT_MAX, '\n');
     }
 
     while(true){
-        cout << "Would you like to play another game? (1 - Yes / 0 - No)\nAnswer: ";
-        cin >> answer;
-
+        if (!safeToRead(answer) || answer != 0 || answer != 1){
+            cout << "Wrong Input!\nTry again.\n\n";
+            continue;
+        }
         if (answer == 0){
-            cout << "\nOkay buddy!";
+            cout << "Damn bruh, fuh you";
             return 0;
-        } 
+        }
         if (answer == 1){
-            letsplay();            
+            letsplay();
+            break;
         }
-        else if(cin.fail()){
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
-            cout << "Damn bruh, you genuinely can't type for shit.\n";
-            cout << "Try again though.\n\n";
-        }
-        
-        cin.clear();
-        cin.ignore(INT_MAX, '\n');
     }
 
 }

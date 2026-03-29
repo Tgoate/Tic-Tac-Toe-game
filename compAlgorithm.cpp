@@ -221,55 +221,6 @@ void CompPlays1(int i,char board[][3],char* ptr, char playerX,char playerO){
             verticalCounter = 0;
             horizontalCounter = 0;
         }
-
-        //checks if comp can block in the main diagonal
-        for (int counter = 0; counter < 3; counter++){
-            if (board[counter][counter] == blockingMove){
-                diagonalCounter1++;
-            }
-            else if(board[counter][counter] == ' '){
-                diagonalSavedColumn1 = counter;
-                diagonalSavedRow1 = counter;
-                diagonalSafeSpot1 = true;
-            }
-
-            if (diagonalCounter1 == 2 && diagonalSafeSpot1 == true){
-                board[diagonalSavedRow1][diagonalSavedColumn1] = *ptr;
-                *ptr = (*ptr == playerO) ? playerX : playerO;
-                return;
-            }
-        }
-
-        //checks if comp can block in the second diagonal
-        for (int row = 0; row < 3; row++){
-            for (int column = 0; column < 3; column++){
-                if (abs(row - column) == 2){
-                    if (board[row][column] == blockingMove){
-                        diagonalCounter2++;
-                    }
-                    else if (board[row][column] == ' '){
-                        diagonalSafeSpot2 = true;
-                        diagonalSavedColumn2 = column;
-                        diagonalSavedRow2 = row;
-                    }
-                }
-                if (row == 1 && column == 1){
-                    if (board[row][column] == blockingMove){
-                        diagonalCounter2++;
-                    }
-                    else if (board[row][column] == ' '){
-                        diagonalSafeSpot2 = true;
-                        diagonalSavedColumn2 = column;
-                        diagonalSavedRow2 = row;
-                    }
-                }
-            }
-            if (diagonalCounter2 == 2 && diagonalSafeSpot2 == true){
-                board[diagonalSavedRow2][diagonalSavedColumn2] = *ptr;
-                *ptr = (*ptr == playerO) ? playerX : playerO;
-                return;
-            }
-        }
     }
 
 
@@ -310,21 +261,52 @@ void CompPlays1(int i,char board[][3],char* ptr, char playerX,char playerO){
         }
     }
 
-    for (int counter = 0 ; counter < 3 ; counter++){
-        if (savedRow != -1){
-            if(board[savedRow][counter] == ' '){
-                board[savedRow][counter] = *ptr;
+    int counterPtrV = 0;
+    int counterSpaceV = 0;
+    
+    int savedRowV = -1;
+    int savedColumnV = -1;
+
+    int counterPtrH = 0;
+    int counterSpaceH = 0;
+    
+    int savedRowH = -1;
+    int savedColumnH = -1;
+
+
+    for (int row = 0 ; row < 3 ; row++){
+        for (int column = 0 ; column < 3 ; column++){
+            if (board[row][column] == *ptr){
+                counterPtrV++;
+            }
+            else if (board[row][column] == ' '){
+                counterSpaceV++;
+                savedRowV = row;
+                savedColumnV = column;
+            }
+            if (counterPtrV == 1 && counterSpaceV == 2){
+                board[savedRowV][savedColumnV] = *ptr;
+                *ptr = (*ptr == playerO) ? playerX : playerO;
+                return;
+            }
+            if (board[column][row] == *ptr){
+                counterPtrH++;
+            }
+            else if (board[column][row] == ' '){
+                counterSpaceH++;
+                savedRowH = column;
+                savedColumnH = row;
+            }
+            if (counterPtrH == 1 && counterSpaceH == 2){
+                board[savedRowH][savedColumnH] = *ptr;
                 *ptr = (*ptr == playerO) ? playerX : playerO;
                 return;
             }
         }
-        else if(savedColumn != -1){
-            if(board[counter][savedColumn] == ' '){
-                board[counter][savedColumn] = *ptr;
-                *ptr = (*ptr == playerO) ? playerX : playerO;
-                return;
-            }
-        }
+        counterPtrH = 0;
+        counterSpaceH = 0;
+        counterPtrV = 0;
+        counterSpaceV = 0;
     }
 
     if (i == 4){
@@ -338,7 +320,7 @@ void CompPlays1(int i,char board[][3],char* ptr, char playerX,char playerO){
             }
         }
     }
-
+ 
     return;
 }
 
@@ -608,6 +590,16 @@ void CompPlays2(int i,char board[][3],char* ptr, char playerX,char playerO){
         }
         else if (board[0][1] == blockingMove && board[1][0] == blockingMove){
             board[0][0] = *ptr;
+            *ptr = (*ptr == playerO) ? playerX : playerO;
+            return;
+        }
+        else if (board[0][1] == blockingMove && board[1][2] == blockingMove){
+            board[0][2] = *ptr;
+            *ptr = (*ptr == playerO) ? playerX : playerO;
+            return;
+        }
+        else if (board[1][0] == blockingMove && board[2][1] == blockingMove){
+            board[2][0] = *ptr;
             *ptr = (*ptr == playerO) ? playerX : playerO;
             return;
         }

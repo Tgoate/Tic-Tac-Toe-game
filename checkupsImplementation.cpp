@@ -1,37 +1,54 @@
 #include <iostream>
 #include <cmath>
+#include <sstream>
+#include <string>
 #include "checkups.h"
-using std::cout; using std::cin;
+using std::cout; using std::cin; using std::getline; using std::string;
+
+bool safeToRead(int &output){
+    string input;
+    getline(cin, input);
+
+    if (input.empty())
+        return false;
+
+    //checks if every char of the input is an int
+    for (int c = 0; c < input.size(); c++){
+        if (!isdigit(input[c]))
+            return false;
+    }
+    
+    output = stoi(input);
+    return true;
+}
 
 void CheckForMistakeAndUpdate(char board[][3], char *ptr, char playerX, char playerO){
     int row = -1;
     int column = -1;
-    
+
     while(true){
-        cout << "\nEnter the row and column (0-2) you wish to fill: ";
-        cin >> row >> column;
-        if (row < 0 || column < 0 || row >= 3 || column >= 3){
-            cout << "Error: Row or Column out of range.\nTry again.\n\n";
-        }
-        else if (board[row][column] != ' '){
-            cout << "Space already occupied.\nTry again.\n\n";
-        }
-        if (cin.fail()){
-            cin.clear();
-            cin.ignore(INT_MAX, '\n');
+        cout << "\nEnter the row and column (0-2) you wish to fill:\n";
+        cout << "Row: ";
+        if (!safeToRead(row) || row > 2 || row < 0){
             cout << "Wrong Input!\nTry again.\n\n";
+            continue;
+        }
+        
+        cout << "Column: ";
+        if (!safeToRead(column) || column < 0 || column > 2){
+            cout << "Wrong Input!\nTry again.\n\n";
+            continue;
         }
 
-        if ((row >= 0 && row <= 2) && (column >= 0 && column <= 2)){
-            board[row][column] = *ptr;
-            cin.ignore();
-            *ptr = (*ptr == playerO) ? playerX : playerO;
+        if (board[row][column] != ' '){
+            cout << "Wrong Input! Spot taken.\nTry again.\n\n";
+            continue;
+        }
+
+        else 
             break;
-        }
 
-        int row = -1;
-        int column = -1;
-        }
+    }
 
     return;
 }
