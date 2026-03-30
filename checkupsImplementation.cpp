@@ -45,9 +45,11 @@ void CheckForMistakeAndUpdate(char board[][3], char *ptr, char playerX, char pla
             continue;
         }
 
-        else 
+        else{ 
+            board[row][column] = *ptr;
+            *ptr = (*ptr == playerO) ? playerX : playerO;
             break;
-
+        }
     }
 
     return;
