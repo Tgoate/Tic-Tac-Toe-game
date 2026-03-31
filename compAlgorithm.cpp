@@ -352,6 +352,76 @@ void CompPlays2(int i,char board[][3],char* ptr, char playerX,char playerO){
     int diagonalSavedColumn2 = -1;
     bool diagonalSafeSpot2 = false;
 
+    char blockingMove = (*ptr == playerO) ? playerX : playerO;
+
+    if (i == 0 && board[1][1] == ' '){
+        board[1][1] = *ptr;
+        *ptr = (*ptr == playerO) ? playerX : playerO;
+        return;
+    }
+    else if(i == 0){
+        switch(random){
+            case 1:
+                if (board[0][0] == ' ')
+                    board[0][0] = *ptr;
+                break;
+            case 2:
+                if (board[0][2] == ' ')
+                    board[0][2] = *ptr;
+                break;
+            case 3:
+                if (board[2][0] == ' ')
+                    board[2][0] = *ptr;
+                break;
+            case 4:
+                if (board[2][2] == ' ') 
+                    board[2][2] = *ptr;
+                break;
+        }
+        *ptr = (*ptr == playerO) ? playerX : playerO;
+        return;
+    }
+
+    if (i == 1 && board[1][1] != *ptr){
+        if (board[0][0] == *ptr){
+            board[2][0] = *ptr;
+        }
+        else if (board[0][2] == *ptr){
+            board[2][2] = *ptr;
+        }
+        else if (board[2][2] == *ptr){
+            board[0][2] = *ptr;
+        }
+        else if(board[2][0] == *ptr){
+            board[0][0] = *ptr;
+        }
+        *ptr = (*ptr == playerO) ? playerX : playerO;
+        return;
+    }
+
+    if (i == 1 && board[1][1] == *ptr){
+        if (board[1][2] == blockingMove && board[2][1] == blockingMove){
+            board[2][2] = *ptr;
+            *ptr = (*ptr == playerO) ? playerX : playerO;
+            return;
+        }
+        else if (board[0][1] == blockingMove && board[1][0] == blockingMove){
+            board[0][0] = *ptr;
+            *ptr = (*ptr == playerO) ? playerX : playerO;
+            return;
+        }
+        else if (board[0][1] == blockingMove && board[1][2] == blockingMove){
+            board[0][2] = *ptr;
+            *ptr = (*ptr == playerO) ? playerX : playerO;
+            return;
+        }
+        else if (board[1][0] == blockingMove && board[2][1] == blockingMove){
+            board[2][0] = *ptr;
+            *ptr = (*ptr == playerO) ? playerX : playerO;
+            return;
+        }
+    }
+
 
     {
         //checks if comp can win
@@ -438,7 +508,7 @@ void CompPlays2(int i,char board[][3],char* ptr, char playerX,char playerO){
         }
     }
 
-    char blockingMove = (*ptr == playerO) ? playerX : playerO;
+    
     
     {
         //checks which is the blocking move
@@ -529,73 +599,7 @@ void CompPlays2(int i,char board[][3],char* ptr, char playerX,char playerO){
 
 
 
-    if (i == 0 && board[1][1] == ' '){
-        board[1][1] = *ptr;
-        *ptr = (*ptr == playerO) ? playerX : playerO;
-        return;
-    }
-    else if(i == 0){
-        switch(random){
-            case 1:
-                if (board[0][0] == ' ')
-                    board[0][0] = *ptr;
-                break;
-            case 2:
-                if (board[0][2] == ' ')
-                    board[0][2] = *ptr;
-                break;
-            case 3:
-                if (board[2][0] == ' ')
-                    board[2][0] = *ptr;
-                break;
-            case 4:
-                if (board[2][2] == ' ') 
-                    board[2][2] = *ptr;
-                break;
-        }
-        *ptr = (*ptr == playerO) ? playerX : playerO;
-        return;
-    }
-
-    if (i == 1 && board[1][1] != *ptr){
-        if (board[0][0] == *ptr){
-            board[2][0] = *ptr;
-        }
-        else if (board[0][2] == *ptr){
-            board[2][2] = *ptr;
-        }
-        else if (board[2][2] == *ptr){
-            board[0][2] = *ptr;
-        }
-        else if(board[2][0] == *ptr){
-            board[0][0] = *ptr;
-        }
-        *ptr = (*ptr == playerO) ? playerX : playerO;
-        return;
-    }
-
-    if (i == 1 && board[1][1] == *ptr){
-        if (board[1][2] == blockingMove && board[2][1] == blockingMove){
-            board[2][2] = *ptr;
-            *ptr = (*ptr == playerO) ? playerX : playerO;
-            return;
-        }
-        else if (board[0][1] == blockingMove && board[1][0] == blockingMove){
-            board[0][0] = *ptr;
-            *ptr = (*ptr == playerO) ? playerX : playerO;
-            return;
-        }
-        else if (board[0][1] == blockingMove && board[1][2] == blockingMove){
-            board[0][2] = *ptr;
-            *ptr = (*ptr == playerO) ? playerX : playerO;
-            return;
-        }
-        else if (board[1][0] == blockingMove && board[2][1] == blockingMove){
-            board[2][0] = *ptr;
-            *ptr = (*ptr == playerO) ? playerX : playerO;
-            return;
-        }
-    }
+    
         
 
     int numRows[3] = {};
